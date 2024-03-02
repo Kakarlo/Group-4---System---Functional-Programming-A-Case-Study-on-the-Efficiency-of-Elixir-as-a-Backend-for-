@@ -23,9 +23,9 @@ defmodule Catalog.Genre do
   end
 
   def update_genre(id, new) do
-    a = Genre
+    g = Genre
     |> Repo.get(id)
-    Genre.changeset(a, %{name: new})
+    Genre.changeset(g, %{name: new})
     |> Repo.update()
   end
 
@@ -46,12 +46,13 @@ defmodule Catalog.Genre do
   end
 
   def show_genre(choice, input) do
-    author = search_genre(choice, input)
-    unless author == nil do
+    genre = search_genre(choice, input)
+    unless genre == nil do
       header()
-      author
-      |> print_genre()
-      author.id
+      genre
+      |> Repo.preload(:entry)
+      |> print_genre_entry()
+      genre.id
     else
       IO.puts("No entry has been found")
     end
@@ -66,6 +67,12 @@ defmodule Catalog.Genre do
 
   defp print_genre(struct) do
     IO.puts("| #{pad(struct.id |> Integer.to_string(), 6)} | #{pad(struct.name, 10)} |")
+  end
+
+  defp print_genre_entry(struct) do
+    en = struct.entry
+    entry = Enum.map(en, fn x -> "| #{pad(x.id |> Integer.to_string(), 6)} | #{pad(x.name, 20)} | "end) |> Enum.join("\n")
+    IO.puts("| #{pad(struct.id |> Integer.to_string(), 6)} | #{pad(struct.name, 10)} |\n\nWorks Incl. #{struct.name}:\n#{entry}")
   end
 
   defp pad(input, pad) do

@@ -114,6 +114,7 @@ defmodule Catalog do
       |> String.split(~r{,\s+})
       |> Enum.map(&String.trim/1)
       |> Enum.reject(& &1 == "")
+      |> Enum.uniq()
     else
       :stop
     end
@@ -172,7 +173,7 @@ defmodule Catalog do
   end
 
   defp entry_author(entry) do
-    author = input_list("Author Names: ")
+    author = input_list("Author: ")
     unless author == :stop do
       entry_genre(Map.put_new(entry, :author, author))
     else

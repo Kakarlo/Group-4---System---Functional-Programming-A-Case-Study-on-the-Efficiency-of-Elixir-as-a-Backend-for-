@@ -50,7 +50,8 @@ defmodule Catalog.Author do
     unless author == nil do
       header()
       author
-      |> print_author()
+      |> Repo.preload(:entry)
+      |> print_author_entry()
       author.id
     else
       IO.puts("No entry has been found")
@@ -66,6 +67,12 @@ defmodule Catalog.Author do
 
   defp print_author(struct) do
     IO.puts("| #{pad(struct.id |> Integer.to_string(), 6)} | #{pad(struct.name, 10)} |")
+  end
+
+  defp print_author_entry(struct) do
+    en = struct.entry
+    entry = Enum.map(en, fn x -> "| #{pad(x.id |> Integer.to_string(), 6)} | #{pad(x.name, 20)} | "end) |> Enum.join("\n")
+    IO.puts("| #{pad(struct.id |> Integer.to_string(), 6)} | #{pad(struct.name, 10)} |\n\nAuthor's Work:\n#{entry}")
   end
 
   defp pad(input, pad) do

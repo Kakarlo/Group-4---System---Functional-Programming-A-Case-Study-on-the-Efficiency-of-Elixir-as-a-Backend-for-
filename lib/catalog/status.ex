@@ -35,9 +35,9 @@ defmodule Catalog.Status do
   end
 
   def update_status(id, new) do
-    a = Status
+    s = Status
     |> Repo.get(id)
-    Status.changeset(a, %{name: new})
+    Status.changeset(s, %{name: new})
     |> Repo.update()
   end
 
@@ -58,12 +58,12 @@ defmodule Catalog.Status do
   end
 
   def show_status(choice, input) do
-    author = search_status(choice, input)
-    unless author == nil do
+    status = search_status(choice, input)
+    unless status == nil do
       header()
-      author
+      status
       |> print_status()
-      author.id
+      status.id
     else
       IO.puts("No entry has been found")
     end
