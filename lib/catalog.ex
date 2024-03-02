@@ -131,7 +131,8 @@ defmodule Catalog do
       {2} -> main_menu2(:author)
       {3} -> main_menu2(:genre)
       {4} -> main_menu2(:status)
-      {0} -> IO.puts("Shutting Down. . .")
+      {0} ->
+        IO.puts("Shutting Down. . .")
       {:stop} -> :ok
       _ ->
         IO.puts("Invalid Input")
@@ -163,7 +164,6 @@ defmodule Catalog do
       {8} ->
         search(:id, type, :delete)
       {0} ->
-      IO.puts("Back")
       main_menu()
       {:stop} -> :ok
       _ ->
