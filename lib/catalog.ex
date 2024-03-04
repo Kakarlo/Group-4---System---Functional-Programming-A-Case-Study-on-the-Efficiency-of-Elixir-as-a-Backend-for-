@@ -176,8 +176,6 @@ defmodule Catalog do
     author = input_list("Author: ")
     unless author == :stop do
       entry_genre(Map.put_new(entry, :author, author))
-    else
-      main_menu2(:entry)
     end
   end
 
@@ -185,8 +183,6 @@ defmodule Catalog do
     genre = input_list("Genre: ")
     unless genre == :stop do
       entry_status(Map.put_new(entry, :genre, genre))
-    else
-      main_menu2(:entry)
     end
   end
 
@@ -197,10 +193,6 @@ defmodule Catalog do
       params = Map.put_new(entry, :status_id, status)
       Entry.add_entry(params)
       Entry.show_entry(:name, entry.name)
-      IO.gets("Press Enter to proceed")
-      main_menu2(:entry)
-    else
-      main_menu2(:entry)
     end
   end
 
@@ -237,24 +229,22 @@ defmodule Catalog do
         name = input_name("Enter Author Name: ", Author)
         unless name == :stop do
           Author.add_author(%{name: name})
-          IO.gets("Press Enter to Proceed")
         else
         end
       :genre ->
         name = input_name("Enter Genre Name: ", Genre)
         unless name == :stop do
           Genre.add_genre(%{name: name})
-          IO.gets("Press Enter to Proceed")
         else
         end
       :status ->
         name = input_name("Enter Status Name: ", Status)
         unless name == :stop do
           Status.add_status(%{name: name})
-          IO.gets("Press Enter to Proceed")
         else
         end
     end
+    IO.gets("Press Enter to proceed")
     main_menu2(type)
   end
 

@@ -62,7 +62,8 @@ defmodule Catalog.Status do
     unless status == nil do
       header()
       status
-      |> print_status()
+      |> Repo.preload(:entry)
+      |> print_status_entry()
       status.id
     else
       IO.puts("No entry has been found")
@@ -78,6 +79,13 @@ defmodule Catalog.Status do
 
   defp print_status(struct) do
     IO.puts("| #{pad(struct.id |> Integer.to_string(), 6)} | #{pad(struct.name, 10)} |")
+  end
+
+  defp print_status_entry(struct) do
+    en = struct.entry
+    entry = Enum.map(en, fn x -> "| #{pad(x.id |> Integer.to_string(), 6)} | #{pad(x.name, 20)} | "end) |> Enum.join("\n")
+    IO.puts("| #{pad(struct.id |> Integer.to_string(), 6)} | #{pad(struct.name, 10)} |" <>
+            "\n\nEntries with \"#{pad(struct.name, 1)}\" status:\n#{entry}")
   end
 
   defp pad(input, pad) do
